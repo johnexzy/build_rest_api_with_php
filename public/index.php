@@ -2,6 +2,7 @@
 require '../bootstrap.php';
 use Src\Controller\CommentsController;
 use Src\Controller\PersonController;
+use Src\Controller\NewsController;
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
@@ -46,6 +47,24 @@ elseif ($uri[1] == 'comments') {
 
     // pass the request method and user ID to the PersonController and process the HTTP request:
     $controller = new CommentsController($dbConnection, $requestMethod, $tag, $comId);
+    $controller->processRequest();
+}
+elseif ($uri[1] == 'news') {
+    $id = null;
+    $cat = null;
+    if (isset($uri[2])) {
+        if ($requestMethod == "GET") {
+            $cat = (String) $uri[2];
+        }
+        if ($requestMethod == "PUT") {
+            $id = (int) $uri[2];
+        }
+    }
+
+    
+
+    // pass the request method and user ID to the PersonController and process the HTTP request:
+    $controller = new NewsController($dbConnection, $requestMethod, $cat, $id);
     $controller->processRequest();
 }
 else{

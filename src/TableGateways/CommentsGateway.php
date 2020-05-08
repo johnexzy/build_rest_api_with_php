@@ -56,9 +56,10 @@ class CommentsGateway
                         $statement = $this->db->prepare($statement);
                         $statement->execute(array(
                                 'tag' => $input['tag'],
-                                'names' => ($input['names'] == "" || $input['names'] == null) 
+                                'names' => (!isset($input['names'])) 
                                 ? "Anonymous" 
-                                : $input['names'],
+                                : (($input['names']=="") ? "Anonymous" : $input['names']),
+                                
                                 'comments' => $input['comments']
                         ));
                         return $this->findAllWithTag($input['tag']);
@@ -66,23 +67,25 @@ class CommentsGateway
                         exit($e->getMessage());
                 }
         }
-        public function update($comId, Array $input)
+        
+        public function update(int $uid, Array $input)
         {
                 $statement = "
-                        UPDATE comment
-                        SET
-                            tag = tag,
-                            names  = names,
-                            comments = comments,
-                        WHERE id = :id
+                UPDATE `comment` 
+                SET 
+                        `tag` = :tag, 
+                        `names` = :names, 
+                        `comments` = :comments 
+                WHERE `comment`.`id` = :id;
                 ";
                 try {
                         $statement = $this->db->prepare($statement);
                         $statement->execute(array(
-                                'id' => (int) $comId,
+                                'id' => (int) $uid,
                                 'tag' => $input['tag'],
                                 'names' => $input['names'],
-                                'comments' => $input['comments']
+                                'comments' => $input['comments'],
+                                
                         ));
                         return $statement->rowCount();
                 } catch (\PDOException $e) {

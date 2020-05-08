@@ -2,34 +2,20 @@
 require 'bootstrap.php';
 
 use Src\TableGateWays\PersonGateway;
+use Src\TableGateWays\NewsGateway;
+use Src\TableGateWays\CommentsGateway;
 
+$commets = new CommentsGateway($dbConnection);
 $personGateway = new PersonGateway($dbConnection);
+$newsGateway = new NewsGateway($dbConnection);
+$result = $newsGateway->insert(array(
+    "headline" => "latest",
+    "uploads" => "images/IMG_20191213_1576261414_UN.png",
+    "body" => "Latest  newes",
+    "tag" => "latest",
+    "category" => "NEWS",
+    "Dateofpost" => "20200507",
+    "Writer" => "JOhn",
+));
 
-
-// return all records
-$result = $personGateway->findAll();
-// echo "findall: ".$result["firstname"]."\n";
-// return the record with id = 1
-if($result = $personGateway->find(4)){
-    echo "found\n";
-};
-
-// insert a new record
-// update the record with id = 10
-$result = $personGateway->update(4, [
-    'firstname' => 'OBA',
-    'lastname' => 'JOHN',
-    'firstparent_id' => 3,
-    'secondparent_id' => 4,
-]);
-echo "update: ".$result."\n";
-// delete the record with id = 10
-$result = $personGateway->delete(10);
-$result = $personGateway->delete(11);
-$result = $personGateway->delete(12);
-$result = $personGateway->delete(13);
-$result = $personGateway->delete(14);
-$result = $personGateway->delete(15);
-$result = $personGateway->delete(16);
-$result = $personGateway->delete(17);
-echo "delete: ".$result."\n";
+echo $result."\n";

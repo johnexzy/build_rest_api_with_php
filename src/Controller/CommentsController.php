@@ -72,9 +72,9 @@ class CommentsController
         if(!$this->validateInput($input)){
             return $this->unprocessableEntityResponse();
         }
-        $this->commentsGateway->update($id, $input);
+        $result = $this->commentsGateway->update($id, $input);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
-        $response['body'] = null;
+        $response['body'] = $result;
         return $response;
     }
     private function deleteComment($id) {
@@ -108,7 +108,7 @@ class CommentsController
     private function notFoundResponse()
     {
         $response['status_code_header'] = 'HTTP/1.1 404 Not Found';
-        $response['body'] = null;
+        $response['body'] = "not found";
         return $response;
     }
 }
