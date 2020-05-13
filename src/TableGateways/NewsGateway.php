@@ -1,19 +1,20 @@
 <?php
 namespace Src\TableGateways;
- 
 
+use Src\Logic\MakeImage;
 use Src\TableGateWays\CommentsGateway;
+
+
 class NewsGateway
 {
     private $db = null;
     public $getComment = null;
-        public function __construct($db)
+    public function __construct($db)
         {
                 $this->db = $db;
                 $this->getComment = new CommentsGateway($db);
                 
         }
-        
         public function getAll()
         {
                 $statement = "
@@ -29,7 +30,7 @@ class NewsGateway
                         $result = array();
                         $statement = $this->db->query($statement);
                         while ($res = $statement->fetch(\PDO::FETCH_ASSOC)) {
-                                $comm = $this->getComment->findAllWithTag($res["tag"]);
+                                $comm = $this->getComment->findAllWithTag($res["post_key"]);
                                 $res += ["comments" => $comm];
                                 $result[] = $res;
                         }
@@ -38,12 +39,13 @@ class NewsGateway
                         exit($e->getMessage());
                 }
         }
+
         public function getAllWithCategory($cat)
         {
                 $statement = "
                         SELECT * 
                         FROM  News
-                        WHERE category = ?
+                        WHERE post_category = ?
                         ORDER BY id DESC;
                 ";
                 
@@ -52,7 +54,7 @@ class NewsGateway
                         $statement = $this->db->prepare($statement);
                         $statement->execute(array($cat));
                         while ($res = $statement->fetch(\PDO::FETCH_ASSOC)) {
-                                $comm = $this->getComment->findAllWithTag($res["tag"]);
+                                $comm = $this->getComment->findAllWithTag($res["post_key"]);
                                 $res += ["comments" => $comm];
                                 $result[] = $res;
                         }
@@ -63,6 +65,7 @@ class NewsGateway
         }
         public function find($id)
         {
+                
                 $statement = "
                         SELECT
                                 *
@@ -75,7 +78,7 @@ class NewsGateway
                         $statement = $this->db->prepare($statement);
                         $statement->execute(array($id));
                         while ($res = $statement->fetch(\PDO::FETCH_ASSOC)) {
-                                $comm = $this->getComment->findAllWithTag($res["tag"]);
+                                $comm = $this->getComment->findAllWithTag($res["post_key"]);
                                 $res += ["comments" => $comm];
                                 $result = $res;
                         }
@@ -86,22 +89,23 @@ class NewsGateway
         }
         public function insert(Array $input)
         {
+                $ddd = new MakeImage();
                 $statement = "
                         INSERT INTO News
-                                (headline, uploads, body, tag, Dateofpost, category, Writer)
+                                (post_title, post_body, post_images, post_key, post_category, author, post_short_url)
                         VALUES
-                                (:headline, :uploads, :body, :tag, :Dateofpost, :category, :Writer)
+                                (:post_title, :post_body, :post_images, :post_key, :post_category, :author, :post_short_url)
                 ";
                 try {
                         $statement = $this->db->prepare($statement);
                         $statement->execute(array(
-                                'headline' => $input['headline'],
-                                'uploads' => $input['uploads'],
-                                'body' => $input['body'],
-                                'tag' => $input['tag'],
-                                'Dateofpost' => $input['Dateofpost'],
-                                'category' => $input['category'],
-                                'Writer' => $input['Writer'],
+                                'post_title' => $input['post_title'],
+                                'post_body' => $input['post_body'],
+                                'post_images' => $ddd->makeImg($input['post_images']),
+                                'post_key' => md5($input['post_title'].rand(123, 2345621)),                            
+                                'post_category' => $input['post_category'],
+                                'author' => $input['author'],
+                                'post_short_url' => str_replace(" ", "-", $input['post_title'])
                                 
                         ));
                         return $statement->rowCount();
@@ -113,9 +117,9 @@ class NewsGateway
         {       $statement = "
                         UPDATE `News` 
                         SET 
-                                `headline` = :headline, 
-                                `uploads` = :uploads, 
-                                `body` = :body 
+                                `post_title` = :post_title, 
+                                `post_body` = :post_body,
+                                `updated_at` = CURRENT_TIMESTAMP
                         WHERE `News`.`id` = :id;
                 ";
                 
@@ -123,9 +127,8 @@ class NewsGateway
                         $statement = $this->db->prepare($statement);
                         $statement->execute(array(
                                 'id' => (int) $uid,
-                                'headline' => $input['headline'],
-                                'uploads' => $input['uploads'],
-                                'body' => $input['body'],
+                                'post_title' => $input['post_title'],
+                                'post_body' => $input['post_body']
                         ));
                         return $statement->rowCount();
                 } catch (\PDOException $e) {
@@ -134,10 +137,7 @@ class NewsGateway
         }
         public function delete($id)
         {
-                $statement = "
-                        DELETE FROM News
-                        WHERE id = :id;
-                ";
+                $statement = "DELETE FROM `news` WHERE `news`.`id` = :id";
 
                 try {
                         $statement=$this->db->prepare($statement);

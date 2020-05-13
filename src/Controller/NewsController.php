@@ -28,7 +28,12 @@ class NewsController
                 if($this->cat){
                     $response = $this->getNewsByCat($this->cat);
                 }
-                
+                elseif($this->id){
+                    $response = $this->getNewsById($this->id);
+                }
+                else{
+                    $response = $this->getAllNews();
+                }
                 break;
             case 'POST':
                 $response = $this->addNewsFromRequest();
@@ -49,6 +54,20 @@ class NewsController
         }
     }
 
+    private function getNewsById($id)
+    {
+        $result = $this->newsGateway->find($id);
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
+        return $response;
+    }
+    private function getAllNews()
+    {
+        $result = $this->newsGateway->getAll();
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
+        return $response;
+    }
     private function getNewsByCat($cat)
     {
         $result = $this->newsGateway->getAllWithCategory($cat);
@@ -91,22 +110,19 @@ class NewsController
         return $response;
     }
     private function validateInput($input) {
-        if ((!isset($input['body'])) || (! isset($input['headline'])) || 
-                (! isset($input['tag'])) || (! isset($input['uploads'])) || 
-                (! isset($input['Writer']))
+        if ((!isset($input['post_body'])) || (! isset($input['post_title'])) || 
+                (! isset($input['post_key'])) || (! isset($input['post_images'])) || 
+                (! isset($input['post_category'])) || (! isset($input['author']))
            ) {
             return false;
         }
         return true;
     }
     private function validateUpdateInput($input) {
-        if (! isset($input['body'])) {
+        if (! isset($input['post_body'])) {
             return false;
         }
-        if (! isset($input['uploads'])) {
-            return false;
-        }
-        if (! isset($input['headline'])) {
+        if (! isset($input['post_title'])) {
             return false;
         }
         return true;
