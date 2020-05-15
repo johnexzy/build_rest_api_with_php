@@ -1,18 +1,6 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace Src\Layout;
 
-/**
- * Description of CarouselClass
- *
- * @author hp
- */
 class CarouselClass {
     //private $url = $_SERVER['SERVER_ADDR'].":".$_SERVER['SERVER_PORT']."/api/carousel";
     private function getJson(){
@@ -50,9 +38,11 @@ class CarouselClass {
                                 <p class="mb-3">
                                     '.$response[$i]["carousel_body"].'
                                 </p>
-                                <a href="http://'.$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].'/view/carousel/'.$response[$i]["carousel_short_url"].'" target="_blank" class="btn btn-dark">DOWNLOAD NOW</a>
+                                <a href="http://'.$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].'/view/carousel/'.$response[$i]["carousel_short_url"].'"
+                                    target="_blank" class="btn btn-dark">DOWNLOAD NOW</a>
                             </div>
-                            <div class="col-md-6 d-none d-md-block pr-0" style="background-size:cover;background-image:url('.$response[$i]["carousel_image"].');"> </div>
+                            <a href="http://'.$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].'/view/carousel/'.$response[$i]["carousel_short_url"].'"'
+                    . ' target="_blank"  class="col-md-6 d-none d-md-block pr-0" style="cursor:pointer;background-size:cover;background-image:url('.$response[$i]["carousel_image"].');"> </a>
                         </div>
                     </div>
                 </div>
@@ -68,9 +58,9 @@ class CarouselClass {
                                     '.$response[$i]["carousel_body"].'
                                 </p>
                                 <a href="http://'.$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].'/view/carousel/'.$response[$i]["carousel_short_url"].'" target="_blank" class="btn btn-dark">DOWNLOAD NOW</a>
+                                </div>
+                                <a href="http://'.$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].'/view/carousel/'.$response[$i]["carousel_short_url"].'" target="_blank"  class="col-md-6 d-none d-md-block pr-0" style="cursor:pointer;background-size:cover;background-image:url('.$response[$i]["carousel_image"].');"> </a>
                             </div>
-                            <div class="col-md-6 d-none d-md-block pr-0" style="background-size:cover;background-image:url('.$response[$i]["carousel_image"].');"> </div>
-                        </div>
                     </div>
                 </div>
             </div>';
