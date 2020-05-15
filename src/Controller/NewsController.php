@@ -110,8 +110,8 @@ class NewsController
         return $response;
     }
     private function validateInput($input) {
-        if ((!isset($input['post_body'])) || (! isset($input['post_title'])) || 
-                (! isset($input['post_key'])) || (! isset($input['post_images'])) || 
+        if ((!isset($input['post_body'])) || (! isset($input['post_title']))
+                || (! isset($input['post_images'])) || 
                 (! isset($input['post_category'])) || (! isset($input['author']))
            ) {
             return false;
