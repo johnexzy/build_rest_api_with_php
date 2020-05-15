@@ -17,7 +17,8 @@ class DatabaseConnector
                                 "mysql:host=$host;port=$port;charset=utf8mb4;dbname=$db",
                                 $user,
                                 $pass
-                        );
+                        )
+                        ;
                 } catch (\PDOException $e) {
                         exit($e->getMessage());
                 }
