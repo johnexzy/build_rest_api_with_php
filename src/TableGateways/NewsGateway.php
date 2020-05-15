@@ -100,7 +100,7 @@ class NewsGateway
                         $statement = $this->db->prepare($statement);
                         $statement->execute(array(
                                 'post_title' => $input['post_title'],
-                                'post_body' => $input['post_body'],
+                                'post_body' => $input[' post_body'],
                                 'post_images' => $ddd->makeImg($input['post_images']),
                                 'post_key' => md5($input['post_title'].rand(123, 2345621)),                            
                                 'post_category' => $input['post_category'],
