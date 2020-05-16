@@ -34,14 +34,14 @@ NAVBAR
 --------------------------------------->
     <nav class="topnav navbar navbar-expand-lg navbar-light bg-white fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="'.$this->root.'index.php"><strong>LeccelGist</strong></a>
+            <a class="navbar-brand" href="'.$this->root.'"><strong>LeccelGist</strong></a>
             <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
 	<span class="navbar-toggler-icon"></span>
 	</button>
             <div class="navbar-collapse collapse" id="navbarColor02" style="">
                 <ul class="navbar-nav mr-auto d-flex align-items-center">
                     <li class="nav-item active">
-                        <a class="nav-link" href="'.$this->root.'index.php">Intro <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="'.$this->root.'">Intro <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="'.$this->root.'article.html">Culture</a>

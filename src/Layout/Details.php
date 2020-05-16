@@ -22,12 +22,12 @@ class Details {
     }
     //Gather all required Components and build up a view
     
-    public function proccessView() {
+    public function proccessView($group) {
         
         $nav = new NavBarClass($this->root, null);
         $nav = $nav->returnNavLayout();
         $body = new ArticleClass($this->detailArray, $this->root);
-        $body = $body->returnLayout();
+        $body = $body->returnLayout($group);
         $footer = new FooterClass;
         $footer = $footer->returnFooterLayout();
         // echo $nav.$body.$footer;

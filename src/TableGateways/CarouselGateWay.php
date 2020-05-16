@@ -134,7 +134,7 @@ class CarouselGateway
                                 'carousel_image' => $ddd->makeImg($input['carousel_image']),
                                 'carousel_key' => md5($input['carousel_title'].rand(123, 2345621)),
                                 'author' => $input['author'],
-                                'carousel_short_url' => str_replace(" ", "-", $input['carousel_title']).rand(123, 1234587)
+                                'carousel_short_url' => str_replace(" ", "-", $input['carousel_title'])."-".rand(12345, 1234587343)
                                 
                         ));
                         return $statement->rowCount();

@@ -1,13 +1,10 @@
 <?php
-
-/*
- * Build the main View of the article or details
- */
-
 namespace Src\Layout;
 
 /**
- * Description of ArticleClass
+ * Build the main UI of the article.
+ * This Can be used with CarouselDetail and NewsDetail
+ * if($group == carousel || $group == News)
  *
  * @author hp
  */
@@ -18,12 +15,24 @@ class ArticleClass {
         $this->getArticle = $getArticle;
         $this->root = $root;
     }
-    function returnLayout() {
-        
-        $carousel_body = explode(".", $this->getArticle["carousel_body"]);
-        $article_body = '';
-        for ($i = 0; $i < count($carousel_body); $i++) {
-            $article_body .= '<p>'.$carousel_body[$i].'</p>';
+    function returnLayout($group) {
+        if ($group == "carousel") {
+            $_body = "carousel_body";
+            $_title = "carousel_title";
+            $_image = "carousel_image";
+            $_key = "carousel_key";
+        }
+        else{
+            $_body = "post_body";
+            $_title = "post_title";
+            $_image = "post_images";
+            $_key = "post_key";
+
+        }
+        $arr_body = explode(".", $this->getArticle[$_body]);
+        $article_body = "";
+        for ($i = 0; $i < count($arr_body); $i++) {
+            $article_body .= "<p>$arr_body[$i]</p>";
         }
         $rawLayout = '
             <div class="container">
@@ -34,16 +43,16 @@ class ArticleClass {
                                 <p class="text-uppercase font-weight-bold">
                                     <a class="text-danger" href="'.$this->root.'category.html">Stories</a>
                                 </p>
-                                <h1 class="display-4 secondfont mb-3 font-weight-bold">'.$this->getArticle["carousel_title"].'</h1>
+                                <h1 class="display-4 secondfont mb-3 font-weight-bold">'.$this->getArticle[$_title].'</h1>
                                 
                                 <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="'.$this->root.$this->getArticle["carousel_image"].'" width="70">
+                                    <img class="rounded-circle" src="'.$this->root.$this->getArticle[$_image].'" width="70">
                                     <small class="ml-2">'.$this->getArticle["author"].' <span class="text-muted d-block">A few hours ago &middot; 5 min. read</span>
                                                         </small>
                                 </div>
                             </div>
                             <div class="col-md-6 pr-0">
-                                <img src="'.$this->root.$this->getArticle["carousel_image"].'">
+                                <img src="'.$this->root.$this->getArticle[$_image].'">
                             </div>
                         </div>
                     </div>
@@ -77,6 +86,30 @@ class ArticleClass {
                         <article class="article-post">
                             '.$article_body.'
                         </article>
+                        <form class="border p-3 bg-lightblue">
+                            <div class="text-dark text-center p-3">
+                                ADD YOUR COMMENT
+                            </div>
+                            <input type="hidden" id="commentKey" value="'.$this->getArticle[$_key].'">
+                            <div class="row form-group">
+                                <div class="col">
+                                    <input type="text" class="form-control" id="nameController" placeholder="name">
+                                    
+                                </div>
+                                
+                            </div>
+                            <div class="form-group">
+                                <span class="text-danger">*</span>
+                                <textarea class="form-control" placeholder="Comment here" id="commentController" rows="6"></textarea>
+                            </div>
+                            
+                            <div class="border p-3">
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary shadow"><i class="fa fa-comment"></i> Comment</button>
+                                </div>       
+                            </div>
+                            
+                        </form>
                         <div class="border p-5 bg-lightblue">
                             <div class="row justify-content-between">
                                 <div class="col-md-5 mb-2 mb-md-0">

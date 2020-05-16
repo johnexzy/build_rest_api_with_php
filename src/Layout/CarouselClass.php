@@ -18,19 +18,19 @@ class CarouselClass {
         return $res;
     }
     public function returnCarousel() {
-        
+        $domain = $_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'];
         $carousel_indicator = '';
         $carouselMain = '';
         $response = (array) $this->getJson();
+        $colors = ['bg-orange', 'bg-light', 'bg-lightblue', 'bg-primary', 'bg-cyan', 'bg-indigo', 'bg-purple', 'bg-success', 'bg-info'];
         for ($i=0; $i < count($response); $i++) {
-            
             $carousel_indicator .= ($i == 0) ? 
             '<li data-target="#carouselExampleIndicators" data-slide-to="'.$i.'" class="active"></li>'
             : '<li data-target="#carouselExampleIndicators" data-slide-to="'.$i.'" ></li>';
             $carouselMain .= ($i == 0)
             ? 
             '<div class="carousel-item active">
-                <div class="jumbotron jumbotron-fluid mb-3 pt-0 pb-0 bg-lightblue position-relative">
+                <div class="jumbotron jumbotron-fluid mb-3 pt-0 pb-0 '.$colors[\array_rand($colors, 1)].' position-relative">
                     <div class="pl-4 pr-0 h-100 tofront">
                         <div class="row justify-content-between">
                             <div class="col-md-6 pt-6 pb-6 align-self-center">
@@ -38,10 +38,10 @@ class CarouselClass {
                                 <p class="mb-3">
                                     '.$response[$i]["carousel_body"].'
                                 </p>
-                                <a href="http://'.$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].'/view/carousel/'.$response[$i]["carousel_short_url"].'"
+                                <a href="http://'.$domain.'/view/carousel/'.$response[$i]["carousel_short_url"].'"
                                     target="_blank" class="btn btn-dark">DOWNLOAD NOW</a>
                             </div>
-                            <a href="http://'.$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].'/view/carousel/'.$response[$i]["carousel_short_url"].'"'
+                            <a href="http://'.$domain.'/view/carousel/'.$response[$i]["carousel_short_url"].'"'
                     . ' target="_blank"  class="col-md-6 d-none d-md-block pr-0" style="cursor:pointer;background-size:cover;background-image:url('.$response[$i]["carousel_image"].');"> </a>
                         </div>
                     </div>
@@ -49,7 +49,7 @@ class CarouselClass {
             </div>'
             :
             '<div class="carousel-item">
-                <div class="jumbotron jumbotron-fluid mb-3 pt-0 pb-0 bg-lightblue position-relative">
+                <div class="jumbotron jumbotron-fluid mb-3 pt-0 pb-0 '.$colors[\array_rand($colors, 1)].' position-relative">
                     <div class="pl-4 pr-0 h-100 tofront">
                         <div class="row justify-content-between">
                             <div class="col-md-6 pt-6 pb-6 align-self-center">
@@ -57,9 +57,9 @@ class CarouselClass {
                                 <p class="mb-3">
                                     '.$response[$i]["carousel_body"].'
                                 </p>
-                                <a href="http://'.$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].'/view/carousel/'.$response[$i]["carousel_short_url"].'" target="_blank" class="btn btn-dark">DOWNLOAD NOW</a>
+                                <a href="http://'.$domain.'/view/carousel/'.$response[$i]["carousel_short_url"].'" target="_blank" class="btn btn-dark">DOWNLOAD NOW</a>
                                 </div>
-                                <a href="http://'.$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'].'/view/carousel/'.$response[$i]["carousel_short_url"].'" target="_blank"  class="col-md-6 d-none d-md-block pr-0" style="cursor:pointer;background-size:cover;background-image:url('.$response[$i]["carousel_image"].');"> </a>
+                                <a href="http://'.$domain.'/view/carousel/'.$response[$i]["carousel_short_url"].'" target="_blank"  class="col-md-6 d-none d-md-block pr-0" style="cursor:pointer;background-size:cover;background-image:url('.$response[$i]["carousel_image"].');"> </a>
                             </div>
                     </div>
                 </div>
@@ -77,10 +77,7 @@ class CarouselClass {
         </div>';
         return $carouseData;
     }
-    //put your code here
-    // public function returnCarosel(){
-    //     return $this->getJson();
-    // }
+    
 }
 // $rrr = new CarouselClass();
 // echo $rrr->returnCarosel();

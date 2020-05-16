@@ -11,13 +11,14 @@ class NewsController
     private $id;
     private $cat;
     private $newsGateway;
+    private $short_url;
 
-    public function __construct($db, $requestMethod, $cat, $id) {
+    public function __construct($db, $requestMethod, $cat, $id, $short_url) {
         $this->db = $db;
         $this->requestMethod = $requestMethod;
         $this->cat = $cat;
         $this->id = $id;
-
+        $this->short_url = $short_url;
         $this->newsGateway = new NewsGateway($db);
     }
 
@@ -30,6 +31,9 @@ class NewsController
                 }
                 elseif($this->id){
                     $response = $this->getNewsById($this->id);
+                }
+                elseif($this->short_url){
+                    $response = $this->getNewsByUrl($this->short_url);
                 }
                 else{
                     $response = $this->getAllNews();
@@ -57,6 +61,13 @@ class NewsController
     private function getNewsById($id)
     {
         $result = $this->newsGateway->find($id);
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
+        return $response;
+    }
+    private function getNewsByUrl($Url)
+    {
+        $result = $this->newsGateway->findByUrl($Url);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($result);
         return $response;

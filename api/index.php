@@ -27,10 +27,23 @@ $requestMethod = $_SERVER['REQUEST_METHOD'];
 if ($uri[2] == 'news') {
     $id = null;
     $cat = null;
+    $short_url = null;
     if (isset($uri[3])) {
         if ($requestMethod == "GET") {
             $cat = (intval($uri[3]) == 0) ? (String) $uri[3] : null;
+            
             $id = ($cat == null) ? (int) $uri[3] : null;
+            //check if uri[3] is actually $cat or a short_url
+            //short_url ends with integer > 12345
+            $check = explode('-', $cat);
+            if ($cat) {
+                if((int) $check[count($check) - 1] >= 12345){
+                    $short_url = $cat;
+                    $cat = null;
+                }
+            }
+            
+            //echo $short_url;
         }
         elseif ($requestMethod == "PUT") {
             $id = (int) $uri[3];
@@ -43,7 +56,7 @@ if ($uri[2] == 'news') {
     
 
     // pass the request method and user ID to the NewsController and process the HTTP request:
-    $controller = new NewsController($dbConnection, $requestMethod, $cat, $id);
+    $controller = new NewsController($dbConnection, $requestMethod, $cat, $id, $short_url);
     $controller->processRequest();
 }
 elseif ($uri[2] == 'person') {

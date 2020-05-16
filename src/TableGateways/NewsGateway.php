@@ -87,6 +87,30 @@ class NewsGateway
                         exit($e->getMessage());
                 }
         }
+        public function findByUrl($short_url)
+        {
+                
+                $statement = "
+                        SELECT
+                                *
+                        FROM
+                                News
+                        WHERE post_short_url = ?;
+                ";
+                try {
+                        $result = null;
+                        $statement = $this->db->prepare($statement);
+                        $statement->execute(array($short_url));
+                        while ($res = $statement->fetch(\PDO::FETCH_ASSOC)) {
+                                $comm = $this->getComment->findAllWithTag($res["post_key"]);
+                                $res += ["comments" => $comm];
+                                $result = $res;
+                        }
+                        return $result;
+                } catch (\PDOException $e) {
+                        exit($e->getMessage());
+                }
+        }
         public function insert(Array $input)
         {
                 $ddd = new MakeImage();
@@ -100,12 +124,12 @@ class NewsGateway
                         $statement = $this->db->prepare($statement);
                         $statement->execute(array(
                                 'post_title' => $input['post_title'],
-                                'post_body' => $input[' post_body'],
+                                'post_body' => $input['post_body'],
                                 'post_images' => $ddd->makeImg($input['post_images']),
                                 'post_key' => md5($input['post_title'].rand(123, 2345621)),                            
                                 'post_category' => $input['post_category'],
                                 'author' => $input['author'],
-                                'post_short_url' => str_replace(" ", "-", $input['post_title'])
+                                'post_short_url' => str_replace(" ", "-", $input['post_title']."-".rand(12345, 23456219090))
                                 
                         ));
                         return $statement->rowCount();

@@ -6,11 +6,14 @@ require 'bootstrap.php';
 use Src\Layout\NavBarClass;
 use Src\Layout\FooterClass;
 use Src\Layout\CarouselClass;
+use Src\Layout\NewsClass;
 
-
-$footer = new FooterClass();
 $navbar = new NavBarClass("./", null);
 $carousel = new CarouselClass();
+$news = new NewsClass;
+$footer = new FooterClass();
+
+
 echo($navbar->returnNavLayout());
 
 ?>
@@ -24,8 +27,17 @@ HEADER
     <div class="container">
         <?php
             echo($carousel->returnCarousel());
-        ?>
-
+        ?>        
+    </div>
+    <div class="container">
+        <div class="border p-5">
+                    <div class="text-center">
+                        <h5 class="font-weight-bold secondfont">Welcome to <?php echo(getenv("APP_NAME")) ?></h5>
+                        Get the latest news, movies, musics, Tv-series and entertainments right here.
+                    </div>
+                    
+               
+            </div>
     </div>
     <!-- End Header -->
 
@@ -34,68 +46,15 @@ HEADER
 MAIN
 --------------------------------------->
 
-    <div class="container pt-4 pb-4">
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="card border-0 mb-4 box-shadow h-xl-300">
-                    <div style="background-image: url(./assets/img/demo/1.jpg); height: 150px;    background-size: cover;    background-repeat: no-repeat;"></div>
-                    <div class="card-body px-0 pb-0 d-flex flex-column align-items-start">
-                        <h2 class="h4 font-weight-bold">
-                            <a class="text-dark" href="./article.html">Brain Stimulation Relieves Depression Symptoms</a>
-                        </h2>
-                        <p class="card-text">
-                            Researchers have found an effective target in the brain for electrical stimulation to improve mood in people suffering from depression.
-                        </p>
-                        <div>
-                            <small class="d-block"><a class="text-muted" href="./author.html">Favid Rick</a></small>
-                            <small class="text-muted">Dec 12 &middot; 5 min read</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="flex-md-row mb-4 box-shadow h-xl-300">
-                    <div class="mb-3 d-flex align-items-center">
-                        <img height="80" src="./assets/img/demo/blog4.jpg">
-                        <div class="pl-3">
-                            <h2 class="mb-2 h6 font-weight-bold">
-                                <a class="text-dark" href="./article.html">Nasa's IceSat space laser makes height maps of Earth</a>
-                            </h2>
-                            <div class="card-text text-muted small">
-                                Jake Bittle in LOVE/HATE
-                            </div>
-                            <small class="text-muted">Dec 12 &middot; 5 min read</small>
-                        </div>
-                    </div>
-                    <div class="mb-3 d-flex align-items-center">
-                        <img height="80" src="./assets/img/demo/blog5.jpg">
-                        <div class="pl-3">
-                            <h2 class="mb-2 h6 font-weight-bold">
-                                <a class="text-dark" href="./article.html">Underwater museum brings hope to Lake Titicaca</a>
-                            </h2>
-                            <div class="card-text text-muted small">
-                                Jake Bittle in LOVE/HATE
-                            </div>
-                            <small class="text-muted">Dec 12 &middot; 5 min read</small>
-                        </div>
-                    </div>
-                    <div class="mb-3 d-flex align-items-center">
-                        <img height="80" src="./assets/img/demo/blog6.jpg">
-                        <div class="pl-3">
-                            <h2 class="mb-2 h6 font-weight-bold">
-                                <a class="text-dark" href="./article.html">Sun-skimming probe starts calling home</a>
-                            </h2>
-                            <div class="card-text text-muted small">
-                                Jake Bittle in LOVE/HATE
-                            </div>
-                            <small class="text-muted">Dec 12 &middot; 5 min read</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <?php
+            echo($news->returnNews("news"));
+    ?>
+    <?php
+            echo($news->returnNews("tech"));
+    ?>
+    <?php
+            echo($news->returnNews("sports"));
+    ?>
     <div class="container">
         <div class="row justify-content-between">
             <div class="col-md-8">
