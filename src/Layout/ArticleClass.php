@@ -31,6 +31,11 @@ class ArticleClass {
         }
         $arr_body = explode(".", $this->getArticle[$_body]);
         $article_body = "";
+        $comment = $this->getArticle['comments'];
+        $commentsUI = '';
+        for ($i=0; $i < count($comment); $i++) { 
+            $commentsUI .= "name is ".$comment[$i]['name']." : comment is ".$comment[$i]['comment'];
+        }
         for ($i = 0; $i < count($arr_body); $i++) {
             $article_body .= "<p>$arr_body[$i]</p>";
         }
@@ -86,6 +91,7 @@ class ArticleClass {
                         <article class="article-post">
                             '.$article_body.'
                         </article>
+                        '.$commentsUI.'
                         <form class="border p-3 bg-lightblue">
                             <div class="text-dark text-center p-3">
                                 ADD YOUR COMMENT
@@ -105,7 +111,7 @@ class ArticleClass {
                             
                             <div class="border p-3">
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-primary shadow"><i class="fa fa-comment"></i> Comment</button>
+                                    <button type="button" id="handleSubmit" class="btn btn-primary shadow"><i class="fa fa-comment"></i> Comment</button>
                                 </div>       
                             </div>
                             

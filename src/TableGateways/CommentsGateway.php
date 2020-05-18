@@ -8,18 +8,18 @@ class CommentsGateway
         {
                 $this->db = $db;
         }
-        public function findAllWithTag($tag)
+        public function findAllWithKey($key)
         {
                 $statement = "
                         SELECT
                                 *
                         FROM
                                 comment
-                        WHERE tag = ?;
+                        WHERE comment_key = ?;
                 ";
                 try {
                         $statement = $this->db->prepare($statement);
-                        $statement->execute(array($tag));
+                        $statement->execute(array($key));
                         $result = $statement->fetchAll(\PDO::FETCH_ASSOC);
                         return $result;
                 } catch (\PDOException $e) {
@@ -48,21 +48,21 @@ class CommentsGateway
         {
                 $statement = "
                         INSERT INTO comment
-                                (tag, names, comments)
+                                (name, comment, comment_key)
                         VALUES
-                                (:tag, :names, :comments)
+                                (:name, :comment, :comment_key)
                 ";
                 try {
                         $statement = $this->db->prepare($statement);
                         $statement->execute(array(
-                                'tag' => $input['tag'],
-                                'names' => (!isset($input['names'])) 
+                                'name' => (!isset($input['name'])) 
                                 ? "Anonymous" 
-                                : (($input['names']=="") ? "Anonymous" : $input['names']),
+                                : (($input['name']=="") ? "Anonymous" : $input['name']),
                                 
-                                'comments' => $input['comments']
+                                'comment' => strip_tags($input['comment']),
+                                'comment_key' => $input['comment_key']
                         ));
-                        return $this->findAllWithTag($input['tag']);
+                        return $this->findAllWithKey($input['comment_key']);
                 } catch (\PDOException $e) {
                         exit($e->getMessage());
                 }
@@ -72,19 +72,17 @@ class CommentsGateway
         {
                 $statement = "
                 UPDATE `comment` 
-                SET 
-                        `tag` = :tag, 
-                        `names` = :names, 
-                        `comments` = :comments 
+                SET
+                        `name` = :name, 
+                        `comment` = :comment
                 WHERE `comment`.`id` = :id;
                 ";
                 try {
                         $statement = $this->db->prepare($statement);
                         $statement->execute(array(
                                 'id' => (int) $uid,
-                                'tag' => $input['tag'],
-                                'names' => $input['names'],
-                                'comments' => $input['comments'],
+                                'name' => $input['name'],
+                                'comment' => strip_tags(stripslashes($input['comment'])),
                                 
                         ));
                         return $statement->rowCount();

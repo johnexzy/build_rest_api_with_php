@@ -8,16 +8,15 @@ use Src\Controller\CarouselController;
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8;");
 header("Access-Control-Allow-Methods: OPTIONS,GET,POST,PUT,DELETE");
-header("Access-Control-Max-Age: 300");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers");
 
-if (isset($_SERVER['HTTP_ORIGIN'])) {
-    if($_SERVER['HTTP_ORIGIN'] == "http://127.0.0.1:8080"){
+// if (isset($_SERVER['HTTP_ORIGIN'])) {
+//     if($_SERVER['HTTP_ORIGIN'] == "http://127.0.0.1:8080"){
     
-        header("Access-Control-Allow-Origin: http://127.0.0.1:8080");
-        header("Content-Type: application/json");
-    }
-}
+//         header("Access-Control-Allow-Origin: http://127.0.0.1:8080");
+//         header("Content-Type: application/json");
+//     }
+// }
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri = explode('/', $uri);
@@ -74,13 +73,13 @@ elseif ($uri[2] == 'person') {
     //pass the request Method and user ID to PersonController and process the HTTP request
 
 }
-elseif ($uri[2] == 'comments') {
+elseif ($uri[2] == 'comment') {
     $comId = null;
-    $tag = null;
+    $key = null;
     if (isset($uri[3])) {
         if ($requestMethod == "GET") {
-            $tag = (String) $uri[3];
-            $tag = str_replace("%20", " ", $tag);
+            $key = (String) $uri[3];
+            
         }
         if ($requestMethod == "PUT") {
             $comId = (int) $uri[3];
@@ -90,7 +89,7 @@ elseif ($uri[2] == 'comments') {
     
 
     // pass the request method and user ID to the CommentController and process the HTTP request:
-    $controller = new CommentsController($dbConnection, $requestMethod, $tag, $comId);
+    $controller = new CommentsController($dbConnection, $requestMethod, $key, $comId);
     $controller->processRequest();
 }
 

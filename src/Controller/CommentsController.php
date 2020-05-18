@@ -9,13 +9,13 @@ class CommentsController
     private $db;
     private $requestMethod;
     private $comId;
-    private $tag;
+    private $key;
     private $commentsGateway;
 
-    public function __construct($db, $requestMethod, $tag, $comId) {
+    public function __construct($db, $requestMethod, $key, $comId) {
         $this->db = $db;
         $this->requestMethod = $requestMethod;
-        $this->tag = $tag;
+        $this->key = $key;
         $this->comId = $comId;
 
         $this->commentsGateway = new CommentsGateway($db);
@@ -25,7 +25,7 @@ class CommentsController
     {
         switch ($this->requestMethod) {
             case 'GET':
-                $response = $this->getTaggedComments($this->tag);
+                $response = $this->getKeyedComments($this->key);
                 break;
             case 'POST':
                 $response = $this->addCommentFromRequest();
@@ -46,9 +46,9 @@ class CommentsController
         }
     }
 
-    private function getTaggedComments($tag)
+    private function getKeyedComments($key)
     {
-        $result = $this->commentsGateway->findAllWithTag($tag);
+        $result = $this->commentsGateway->findAllWithKey($key);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($result);
         return $response;
@@ -88,10 +88,10 @@ class CommentsController
         return $response;
     }
     private function validateInput($input) {
-        if (! isset($input['tag'])) {
+        if (! isset($input['comment_key'])) {
             return false;
         }
-        if (! isset($input['comments'])) {
+        if (! isset($input['comment'])) {
             return false;
         }
         return true;

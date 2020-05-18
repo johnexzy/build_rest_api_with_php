@@ -38,6 +38,7 @@ class Details {
                     <script src="'.$this->root.'assets/js/vendor/popper.min.js" type="text/javascript"></script>
                     <script src="'.$this->root.'assets/js/vendor/bootstrap.min.js" type="text/javascript"></script>
                     <script src="'.$this->root.'assets/js/functions.js" type="text/javascript"></script>
+                    <script src="'.$this->root.'assets/js/commentajax.js" type="text/javascript"></script>
                 </body>
 
                 </html>

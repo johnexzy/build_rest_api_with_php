@@ -30,7 +30,7 @@ class NewsGateway
                         $result = array();
                         $statement = $this->db->query($statement);
                         while ($res = $statement->fetch(\PDO::FETCH_ASSOC)) {
-                                $comm = $this->getComment->findAllWithTag($res["post_key"]);
+                                $comm = $this->getComment->findAllWithKey($res["post_key"]);
                                 $res += ["comments" => $comm];
                                 $result[] = $res;
                         }
@@ -54,7 +54,7 @@ class NewsGateway
                         $statement = $this->db->prepare($statement);
                         $statement->execute(array($cat));
                         while ($res = $statement->fetch(\PDO::FETCH_ASSOC)) {
-                                $comm = $this->getComment->findAllWithTag($res["post_key"]);
+                                $comm = $this->getComment->findAllWithKey($res["post_key"]);
                                 $res += ["comments" => $comm];
                                 $result[] = $res;
                         }
@@ -78,7 +78,7 @@ class NewsGateway
                         $statement = $this->db->prepare($statement);
                         $statement->execute(array($id));
                         while ($res = $statement->fetch(\PDO::FETCH_ASSOC)) {
-                                $comm = $this->getComment->findAllWithTag($res["post_key"]);
+                                $comm = $this->getComment->findAllWithKey($res["post_key"]);
                                 $res += ["comments" => $comm];
                                 $result = $res;
                         }
@@ -102,7 +102,7 @@ class NewsGateway
                         $statement = $this->db->prepare($statement);
                         $statement->execute(array($short_url));
                         while ($res = $statement->fetch(\PDO::FETCH_ASSOC)) {
-                                $comm = $this->getComment->findAllWithTag($res["post_key"]);
+                                $comm = $this->getComment->findAllWithKey($res["post_key"]);
                                 $res += ["comments" => $comm];
                                 $result = $res;
                         }
