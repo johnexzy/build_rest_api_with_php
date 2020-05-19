@@ -16,17 +16,19 @@ use Src\Layout\ArticleClass;
 class Details {
     private $detailArray = null;
     private $root = null;
-    public function __construct(Array $detailArray, String $root) {
+    private  $db;
+    public function __construct(Array $detailArray, String $root, $db) {
         $this->detailArray = $detailArray;
         $this->root = $root;
+        $this->db = $db;
     }
     //Gather all required Components and build up a view
-    
     public function proccessView($group) {
         
-        $nav = new NavBarClass($this->root, null);
+        $nav = new NavBarClass($this->root, null);    
+
         $nav = $nav->returnNavLayout();
-        $body = new ArticleClass($this->detailArray, $this->root);
+        $body = new ArticleClass($this->detailArray, $this->root, $this->db);
         $body = $body->returnLayout($group);
         $footer = new FooterClass;
         $footer = $footer->returnFooterLayout();

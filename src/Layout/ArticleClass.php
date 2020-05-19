@@ -8,25 +8,32 @@ namespace Src\Layout;
  *
  * @author hp
  */
+use Src\Layout\NewsClass;
 class ArticleClass {
     private $getArticle = null;
     private  $root = null;
-    public function __construct(Array $getArticle, $root) {
+    private $db;
+    public function __construct(Array $getArticle, $root, $db) {
         $this->getArticle = $getArticle;
         $this->root = $root;
+        $this->db = $db;
     }
     function returnLayout($group) {
+        
         if ($group == "carousel") {
             $_body = "carousel_body";
             $_title = "carousel_title";
             $_image = "carousel_image";
             $_key = "carousel_key";
+            $newsNext = '';
         }
         else{
             $_body = "post_body";
             $_title = "post_title";
             $_image = "post_images";
             $_key = "post_key";
+            $newsNext = new NewsClass($this->db, $this->root, $this->getArticle["id"]);
+            $newsNext = $newsNext->returnNews($this->getArticle["post_category"]);
 
         }
         $arr_body = explode(".", $this->getArticle[$_body]);
@@ -39,6 +46,7 @@ class ArticleClass {
         for ($i = 0; $i < count($arr_body); $i++) {
             $article_body .= "<p>$arr_body[$i]</p>";
         }
+        
         $rawLayout = '
             <div class="container">
                 <div class="jumbotron jumbotron-fluid mb-3 pl-0 pt-0 pb-0 bg-white position-relative">
@@ -137,7 +145,10 @@ class ArticleClass {
                     </div>
                 </div>
             </div>
-
+            <div class="container pt-4 pb-4">
+            
+        
+            '.$newsNext.'
 
             <!-- End Main -->';
         return $rawLayout;

@@ -10,7 +10,7 @@ use Src\Layout\NewsClass;
 
 $navbar = new NavBarClass("./", null);
 $carousel = new CarouselClass($dbConnection);
-$news = new NewsClass($dbConnection);
+$news = new NewsClass($dbConnection, "./");
 $footer = new FooterClass();
 
 

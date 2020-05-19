@@ -6,15 +6,25 @@ namespace Src\Layout;
  * 
  */
 use Src\TableGateways\NewsGateway;
-
+use Src\Logic\CheckDate;
 class NewsClass{
     private  $db = null;
-    
-    public function __construct($db) {
+    private $root = null;
+    private $activeId = null;
+    Public $domain = null;
+    public function __construct($db, $root, $id = null) {
         $this->db = $db;
+        $this->root = $root;
+        $this->activeId = $id;
+        $this->domain =  $_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'];
     }
-    private function getJson(String $cat){
-        
+    private function getJson($cat){
+        if($cat == null){
+            $news = new NewsGateway($this->db);
+            $res = $news->getAll();
+
+            return $res;
+        }
         /**
         * Decode the response from Json to Array(Assoc)
         * $response looks like:
@@ -48,18 +58,21 @@ class NewsClass{
          * $newsSubs builds Subsequent News after the $newsLatest. 
          * $newsMain is the build up of the UI put together.
          */
-        $domain = $_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT'];
+        
         $newsLatest = '';
         $newsMain = '';
         $newsSubs = '';
         $response = (array) $this->getJson($cat);
-        
         for ($i = 0; $i < count($response); $i++) {
+            $time = new CheckDate(strtotime($response[$i]["created_at"]));
+            if($response[$i]["id"] == $this->activeId){
+                continue;
+            }
             $newsLatest .= ($i == 0) ? '
             
                 <div class="card border-0 mb-4 box-shadow h-max-380">
-                    <a href="http://'.$domain.'/view/news/'.$response[$i]["post_short_url"].
-                    '" target="_blank" style="background-image: url('.$response[$i]["post_images"].'); height: 250px;  background-size: cover;    background-repeat: no-repeat;">
+                    <a href="http://'.$this->domain.'/view/news/'.$response[$i]["post_short_url"].
+                    '" target="_blank" style="background-image: url('.$this->root.$response[$i]["post_images"].'); height: 250px;  background-size: cover;    background-repeat: no-repeat;">
                     </a>
                     <div class="card-body px-0 pb-0 d-flex flex-column align-items-start">
                         <h2 class="h4 font-weight-bold">
@@ -72,28 +85,29 @@ class NewsClass{
                         <div>
                             <small class="d-block"><a class="text-muted" href="./author.html">'.$response[$i]["author"].
                             '</a></small>
-                            <small class="text-muted">Dec 12 &middot; 5 min read</small>
+                            <small class="text-muted">'.$time->checkDay().' &middot; 5 min read</small>
                         </div>
                     </div>
                 </div>':'';
            $newsSubs .= ($i !== 0)? '
                     <div class="mb-3 d-flex align-items-center">
-                        <a href="http://'.$domain.'/view/news/'.$response[$i]["post_short_url"].'" target="_blank">
-                            <img height="80" width="120" src="'.$response[$i]["post_images"].'">
+                        <a href="http://'.$this->domain.'/view/news/'.$response[$i]["post_short_url"].'" target="_blank">
+                            <img height="80" width="120" src="'.$this->root.$response[$i]["post_images"].'">
                         </a>
                         
                         <div class="pl-3">
                             <h2 class="mb-2 h6 font-weight-bold">
-                                <a class="text-dark" href="http://'.$domain.'/view/news/'.$response[$i]["post_short_url"].'" target="_blank">'
+                                <a class="text-dark" href="http://'.$this->domain.'/view/news/'.$response[$i]["post_short_url"].'" target="_blank">'
                                 .$response[$i]["post_title"].
                                 '</a>
                             </h2>
                             <div class="card-text text-muted small">
                                 '.$response[$i]["author"].' In '.$response[$i]["post_category"].'
                             </div>
-                            <small class="text-muted">Dec 12 &middot; 5 min read</small>
+                            <small class="text-muted">'.$time->checkDay().'</small>
                         </div>
                     </div>':'';
+
            if($i ==3) break;
             
         }
@@ -114,6 +128,13 @@ class NewsClass{
         ';
         
         return $newsMain;
+    }
+    public function returnAllNews() {
+        $newsLatest = '';
+        $newsMain = '';
+        $newsSubs = '';
+        $response = (array) $this->getJson(null);
+        
     }
 }
 
