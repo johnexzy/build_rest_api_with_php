@@ -10,7 +10,7 @@ $(document).ready(function() {
       comment_key: key
     }
     $.ajax({
-        url: 'http://127.0.0.1:8080/api/comment',
+        url: 'http://127.0.0.1:8090/api/comment',
         type: 'POST',
         data: JSON.stringify(mydata),
         dataType: 'json',

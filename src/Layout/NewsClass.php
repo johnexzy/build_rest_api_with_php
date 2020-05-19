@@ -4,18 +4,17 @@ namespace Src\Layout;
  * This builds a UI 
  * for the NEWS WHERE $cat represents the category, either Politics, Tech or Sports etc. Customisable.
  * 
- * 
  */
+use Src\TableGateways\NewsGateway;
+
 class NewsClass{
+    private  $db = null;
     
+    public function __construct($db) {
+        $this->db = $db;
+    }
     private function getJson(String $cat){
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_URL, "http://127.0.0.1:8080/api/news/$cat");
-        $response = curl_exec($ch);
-        curl_close($ch);
+        
         /**
         * Decode the response from Json to Array(Assoc)
         * $response looks like:
@@ -37,8 +36,8 @@ class NewsClass{
         * 
         
         */
-        
-        $res = (array) json_decode($response, true);
+        $news = new NewsGateway($this->db);
+        $res = $news->getAllWithCategory($cat);
         
         return $res;
     }

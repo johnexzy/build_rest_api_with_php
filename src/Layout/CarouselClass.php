@@ -1,19 +1,24 @@
 <?php
 namespace Src\Layout;
 
-class CarouselClass {
-    //private $url = $_SERVER['SERVER_ADDR'].":".$_SERVER['SERVER_PORT']."/api/carousel";
-    private function getJson(){
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_URL, "http://127.0.0.1:8080/api/carousel");
-        $response = curl_exec($ch);
-        curl_close($ch);
+use Src\TableGateways\CarouselGateway;
 
+class CarouselClass {
+    
+    private $db = null;
+    public function __construct($db) {
+        $this->db = $db;
+    }
+   
+    private function getJson(){
+        /**
+         * use this Api endpoint outside the origin, scheme, or port.
+         * $res = file_get_contents("http://localhost:1234/api/carousel");
+         * $res = (array) json_decode($response, true);
+         */
         
-        $res = (array) json_decode($response, true);
+        $carousel = new CarouselGateway($this->db);
+        $res = $carousel->getAll();
         
         return $res;
     }

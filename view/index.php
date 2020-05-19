@@ -23,7 +23,7 @@ if($uri[2] == 'carousel'){
     }
     
     // pass the request method and user ID to the CarouselController and process the HTTP request:
-    $carousel = new ViewController($short_url, $id, "../../", $uri[2]);
+    $carousel = new ViewController($dbConnection, $short_url, $id, "../../", $uri[2]);
     echo($carousel->showView());
 }
 elseif($uri[2] == 'news'){
@@ -42,7 +42,7 @@ elseif($uri[2] == 'news'){
     }
     
     // pass the request method and user ID to the CarouselController and process the HTTP request:
-    $news = new ViewController($short_url, $id, "../../", $uri[2]);
+    $news = new ViewController($dbConnection, $short_url, $id, "../../", $uri[2]);
     echo($news->showView());
 }
 else{

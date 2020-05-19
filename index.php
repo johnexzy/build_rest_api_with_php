@@ -9,8 +9,8 @@ use Src\Layout\CarouselClass;
 use Src\Layout\NewsClass;
 
 $navbar = new NavBarClass("./", null);
-$carousel = new CarouselClass();
-$news = new NewsClass;
+$carousel = new CarouselClass($dbConnection);
+$news = new NewsClass($dbConnection);
 $footer = new FooterClass();
 
 
@@ -31,13 +31,11 @@ HEADER
     </div>
     <div class="container">
         <div class="border p-5">
-                    <div class="text-center">
-                        <h5 class="font-weight-bold secondfont">Welcome to <?php echo(getenv("APP_NAME")) ?></h5>
-                        Get the latest news, movies, musics, Tv-series and entertainments right here.
-                    </div>
-                    
-               
-            </div>
+            <div class="text-center">
+                <h5 class="font-weight-bold secondfont">Welcome to <?php echo(getenv("APP_NAME")) ?></h5>
+                Get the latest news, movies, musics, Tv-series and entertainments right here.
+            </div>       
+         </div>
     </div>
     <!-- End Header -->
 
