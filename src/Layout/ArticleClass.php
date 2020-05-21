@@ -9,6 +9,7 @@ namespace Src\Layout;
  * @author hp
  */
 use Src\Layout\NewsClass;
+use Src\Logic\CheckDate;
 class ArticleClass {
     private $getArticle = null;
     private  $root = null;
@@ -41,7 +42,21 @@ class ArticleClass {
         $comment = $this->getArticle['comments'];
         $commentsUI = '';
         for ($i=0; $i < count($comment); $i++) { 
-            $commentsUI .= "name is ".$comment[$i]['name']." : comment is ".$comment[$i]['comment'];
+            $time = new CheckDate(strtotime($comment[$i]['created_at']));
+            $commentsUI .= '
+                <li class="comment-li card">
+                    <div>
+                    
+                            <figure class="comment-avatar"><img src="'.$this->root.'assets/img/avatar.png" alt=""></figure>
+                            <address>
+                            By <a href="#">'.$comment[$i]['name'].'</a>
+                            </address>
+                            <time class="comment-time"><i class="fa fa-clock"></i> '.$time->checkDay().' </time>
+                        <div class="comment-content">
+                            '.$comment[$i]['comment'].'
+                        </div>
+                    </div>
+                </li>';
         }
         for ($i = 0; $i < count($arr_body); $i++) {
             $article_body .= "<p>$arr_body[$i]</p>";
@@ -99,7 +114,8 @@ class ArticleClass {
                         <article class="article-post">
                             '.$article_body.'
                         </article>
-                        '.$commentsUI.'
+                        
+                        
                         <form class="border p-3 bg-lightblue">
                             <div class="text-dark text-center p-3">
                                 ADD YOUR COMMENT
@@ -124,25 +140,16 @@ class ArticleClass {
                             </div>
                             
                         </form>
-                        <div class="border p-5 bg-lightblue">
-                            <div class="row justify-content-between">
-                                <div class="col-md-5 mb-2 mb-md-0">
-                                    <h5 class="font-weight-bold secondfont">Become a member</h5>
-                                    Get the latest news right in your inbox. We never spam!
-                                </div>
-                                <div class="col-md-7">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <input type="text" class="form-control" placeholder="Enter your e-mail address">
-                                        </div>
-                                        <div class="col-md-12 mt-2">
-                                            <button type="submit" class="btn btn-success btn-block">Subscribe</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
+                </div>
+            </div>
+            <div class="container">
+                <h5 class="font-weight-bold spanborder"><span><i class="fa fa-comments"></i> Comments</span></h5>
+                <div id="commentBox">    
+                    <ul class="comment-ui">
+                        '.$commentsUI.'
+                    </ul>
                 </div>
             </div>
             <div class="container pt-4 pb-4">

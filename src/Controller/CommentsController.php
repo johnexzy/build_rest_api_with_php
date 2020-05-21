@@ -69,7 +69,7 @@ class CommentsController
             return $this->notFoundResponse();
         }
         $input = (array) json_decode(file_get_contents('php://input'), TRUE);
-        if(!$this->validateInput($input)){
+        if(!$this->validateUpdateInput($input)){
             return $this->unprocessableEntityResponse();
         }
         $result = $this->commentsGateway->update($id, $input);
@@ -91,6 +91,12 @@ class CommentsController
         if (! isset($input['comment_key'])) {
             return false;
         }
+        if (! isset($input['comment'])) {
+            return false;
+        }
+        return true;
+    }
+    private function validateUpdateInput($input) {
         if (! isset($input['comment'])) {
             return false;
         }

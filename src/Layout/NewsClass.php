@@ -76,7 +76,7 @@ class NewsClass{
                     </a>
                     <div class="card-body px-0 pb-0 d-flex flex-column align-items-start">
                         <h2 class="h4 font-weight-bold">
-                            <a class="text-dark" href="http://'.$domain.'/view/news/'.$response[$i]["post_short_url"].
+                            <a class="text-dark" href="http://'. $this->domain.'/view/news/'.$response[$i]["post_short_url"].
                             '" target="_blank">'.$response[$i]["post_title"].'</a>
                         </h2>
                         <p class="card-text">
@@ -85,7 +85,7 @@ class NewsClass{
                         <div>
                             <small class="d-block"><a class="text-muted" href="./author.html">'.$response[$i]["author"].
                             '</a></small>
-                            <small class="text-muted">'.$time->checkDay().' &middot; 5 min read</small>
+                            <small class="text-muted"><i class="fa fa-clock"></i> '.$time->checkDay().' &middot;&nbsp; <i class="fa fa-comments"></i>('.\count($response[$i]["comments"]).')</small>
                         </div>
                     </div>
                 </div>':'';
@@ -104,7 +104,7 @@ class NewsClass{
                             <div class="card-text text-muted small">
                                 '.$response[$i]["author"].' In '.$response[$i]["post_category"].'
                             </div>
-                            <small class="text-muted">'.$time->checkDay().'</small>
+                            <small class="text-muted"><i class="fa fa-clock"></i> '.$time->checkDay().' &middot; &nbsp; <i class="fa fa-comments"></i>('.\count($response[$i]["comments"]).')</small>
                         </div>
                     </div>':'';
 
@@ -130,11 +130,89 @@ class NewsClass{
         return $newsMain;
     }
     public function returnAllNews() {
-        $newsLatest = '';
+        
         $newsMain = '';
         $newsSubs = '';
         $response = (array) $this->getJson(null);
-        
+        for ($i = 0; $i < count($response); $i++) {
+            $time = new CheckDate(strtotime($response[$i]["created_at"]));
+            $newsMain .= '
+                <div class="mb-3 d-flex justify-content-between">
+                    <div class="pr-3">
+                        <h2 class="mb-1 h4 font-weight-bold">
+                            <a class="text-dark" href="http://'.$this->domain.'/view/news/'.$response[$i]["post_short_url"].'" target="_blank">'
+                            .$response[$i]["post_title"].
+                            '</a>
+                        </h2>
+                        <p>
+                            '.substr($response[$i]["post_body"], 0, 22).'
+                        </p>
+                        <div class="card-text text-muted small">
+                            '.$response[$i]["author"].' In '.$response[$i]["post_category"].'
+                        </div>
+                        <small class="text-muted">'.$time->checkDay().'</small>
+                    </div>
+                    <a href="http://'.$this->domain.'/view/news/'.$response[$i]["post_short_url"].'" target="_blank">
+                        <img height="120" src="'.$this->root.$response[$i]["post_images"].'">
+                    </a>
+                </div>';
+        }
+        $newsSubs .='
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-md-8">
+                        <h5 class="font-weight-bold spanborder"><span>All Stories</span></h5>
+                        '.$newsMain.'
+                    </div>
+                    <div class="col-md-4 pl-4">
+                        <h5 class="font-weight-bold spanborder"><span>Popular</span></h5>
+                        <ol class="list-featured">
+                            <li>
+                                <span>
+                                        <h6 class="font-weight-bold">
+                                        <a href="./article.html" class="text-dark">Did Supernovae Kill Off Large Ocean Animals?</a>
+                                        </h6>
+                                        <p class="text-muted">
+                                                Jake Bittle in SCIENCE
+                                        </p>
+                                        </span>
+                            </li>
+                            <li>
+                                <span>
+                                        <h6 class="font-weight-bold">
+                                        <a href="./article.html" class="text-dark">Humans Reversing Climate Clock: 50 Million Years</a>
+                                        </h6>
+                                        <p class="text-muted">
+                                                Jake Bittle in SCIENCE
+                                        </p>
+                                        </span>
+                            </li>
+                            <li>
+                                <span>
+                                        <h6 class="font-weight-bold">
+                                        <a href="./article.html" class="text-dark">Unprecedented Views of the Birth of Planets</a>
+                                        </h6>
+                                        <p class="text-muted">
+                                                Jake Bittle in SCIENCE
+                                        </p>
+                                        </span>
+                            </li>
+                            <li>
+                                <span>
+                                        <h6 class="font-weight-bold">
+                                        <a href="./article.html" class="text-dark">Effective New Target for Mood-Boosting Brain Stimulation Found</a>
+                                        </h6>
+                                        <p class="text-muted">
+                                                Jake Bittle in SCIENCE
+                                        </p>
+                                        </span>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+                  ';
+        return $newsSubs;
     }
 }
 

@@ -8730,6 +8730,30 @@ body {
   overflow-x: hidden;
   padding-top: 69.75px; }
 
+.comment-ui {
+  margin: 0 0 40px 0;
+  padding: 0;
+  list-style: none; }
+
+.comment-li {
+  margin: 0 0 10px 0;
+  padding: 15px;
+  background: #fbfbfb; }
+
+.comment-content {
+  display: block;
+  margin: 0;
+  padding: 0; }
+
+.comment-avatar {
+  float: right;
+  margin: 0 0 10px 10px;
+  padding: 3px;
+  border: 1px solid; }
+
+.comment-time {
+  font-size: smaller; }
+
 .sticky-top {
   top: 69.75px; }
 

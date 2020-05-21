@@ -12,7 +12,7 @@ class ViewController
     private $root = null;
     private $group = null;
     private $db = null;
-    public function __construct($short_url, $id, $root, $group, $db)
+    public function __construct($db, $short_url, $id, $root, $group)
     {
         $this->short_url = $short_url;
         $this->id = $id;
@@ -36,7 +36,7 @@ class ViewController
         return $res;
     }
     public function showView() {
-        $detail = new Details($this->makeRequest(), $this->root);
+        $detail = new Details($this->makeRequest(), $this->root, $this->db);
         return $detail->proccessView($this->group);
         
     }
