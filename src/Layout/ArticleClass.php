@@ -61,6 +61,37 @@ class ArticleClass {
         for ($i = 0; $i < count($arr_body); $i++) {
             $article_body .= "<p>$arr_body[$i]</p>";
         }
+        if($group !== "carousel"){
+            $imageIndicator = '';
+            $imageCarousel = '';
+            foreach ($this->getArticle[$_image] as $key =>$image){
+                $imageIndicator .= ($key == 0) ? '<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>'
+                        : '<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>';
+
+
+                $imageCarousel .= ($key == 0)?'<div class="carousel-item active">
+                            <img class="d-block w-100" src="'.$this->root.$image.'" alt="First slide">
+
+                        </div>':
+                        '<div class="carousel-item">
+                            <img class="d-block w-100" src="'.$this->root.$image.'" alt="First slide">
+
+                        </div>';
+
+
+            }
+            $imageBody = '<div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-ride="carousel">
+                                <ol class="carousel-indicators">
+                                    '.$imageIndicator.'
+                                </ol>
+                                <div class="carousel-inner shadow-sm rounded">
+                                    '.$imageCarousel.'
+                                </div>
+                            </div>';
+        }
+        else{
+            $imageBody = '<img src="'.$this->root.$this->getArticle[$_image].'">';
+        }
         
         $rawLayout = '
             <div class="container">
@@ -74,13 +105,12 @@ class ArticleClass {
                                 <h1 class="display-4 secondfont mb-3 font-weight-bold">'.$this->getArticle[$_title].'</h1>
                                 
                                 <div class="d-flex align-items-center">
-                                    <img class="rounded-circle" src="'.$this->root.$this->getArticle[$_image].'" width="70">
                                     <small class="ml-2">'.$this->getArticle["author"].' <span class="text-muted d-block">A few hours ago &middot; 5 min. read</span>
                                                         </small>
                                 </div>
                             </div>
                             <div class="col-md-6 pr-0">
-                                <img src="'.$this->root.$this->getArticle[$_image].'">
+                                '.$imageBody.'
                             </div>
                         </div>
                     </div>

@@ -34,7 +34,7 @@ class NewsClass{
                     "post_key": "e60e01665de1f1549f48732e5436b520",
                     "post_title": "HEROES VAGUE mschdk ksdjvd sdvdkv kdsvnsdkv ",
                     "post_body": "Lorem ipsum dolor sit am du...",
-                    "post_images": "uploads/1589546287.jpg",
+                    "post_images": ["uploads/1589546287.jpg"],
                     "post_category": "tech",
                     "author": "Oba John",
                     "post_short_url": "HEROES-VAGUE-mschdk-ksdjvd-sdvdkv-kdsvnsdkv-132424",
@@ -72,7 +72,7 @@ class NewsClass{
             
                 <div class="card border-0 mb-4 box-shadow h-max-380">
                     <a href="http://'.$this->domain.'/view/news/'.$response[$i]["post_short_url"].
-                    '" target="_blank" style="background-image: url('.$this->root.$response[$i]["post_images"].'); height: 250px;  background-size: cover;    background-repeat: no-repeat;">
+                    '" target="_blank" style="background-image: url('.$this->root.$response[$i]["post_images"][0].'); height: 250px;  background-size: cover;    background-repeat: no-repeat;">
                     </a>
                     <div class="card-body px-0 pb-0 d-flex flex-column align-items-start">
                         <h2 class="h4 font-weight-bold">
@@ -92,7 +92,7 @@ class NewsClass{
            $newsSubs .= ($i !== 0)? '
                     <div class="mb-3 d-flex align-items-center">
                         <a href="http://'.$this->domain.'/view/news/'.$response[$i]["post_short_url"].'" target="_blank">
-                            <img height="80" width="120" src="'.$this->root.$response[$i]["post_images"].'">
+                            <img height="80" width="120" src="'.$this->root.$response[$i]["post_images"][0].'">
                         </a>
                         
                         <div class="pl-3">
@@ -153,7 +153,7 @@ class NewsClass{
                         <small class="text-muted">'.$time->checkDay().'</small>
                     </div>
                     <a href="http://'.$this->domain.'/view/news/'.$response[$i]["post_short_url"].'" target="_blank">
-                        <img height="120" src="'.$this->root.$response[$i]["post_images"].'">
+                        <img height="120" src="'.$this->root.$response[$i]["post_images"][0].'">
                     </a>
                 </div>';
         }

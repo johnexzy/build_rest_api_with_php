@@ -41,6 +41,15 @@ class Details {
                     <script src="'.$this->root.'assets/js/vendor/bootstrap.min.js" type="text/javascript"></script>
                     <script src="'.$this->root.'assets/js/functions.js" type="text/javascript"></script>
                     <script src="'.$this->root.'assets/js/commentajax.js" type="text/javascript"></script>
+                    <script>
+                        $(".carousel").on("slide.bs.carousel", function(event) {
+                            var height = $(event.relatedTarget).height();
+                            var $innerCarousel = $(event.target).find(".carousel-inner");
+                            $innerCarousel.animate({
+                                height: height
+                            });
+                        });
+                    </script>
                 </body>
 
                 </html>

@@ -31,6 +31,8 @@ class NewsGateway
                         $statement = $this->db->query($statement);
                         while ($res = $statement->fetch(\PDO::FETCH_ASSOC)) {
                                 $comm = $this->getComment->findAllWithKey($res["post_key"]);
+                                $images = $this->getPostImages($res["post_key"]);
+                                $res["post_images"] = $images;
                                 $res += ["comments" => $comm];
                                 $result[] = $res;
                         }
@@ -55,6 +57,8 @@ class NewsGateway
                         $statement->execute(array($cat));
                         while ($res = $statement->fetch(\PDO::FETCH_ASSOC)) {
                                 $comm = $this->getComment->findAllWithKey($res["post_key"]);
+                                $images = $this->getPostImages($res["post_key"]);
+                                $res["post_images"] = $images;
                                 $res += ["comments" => $comm];
                                 $result[] = $res;
                         }
@@ -79,6 +83,9 @@ class NewsGateway
                         $statement->execute(array($id));
                         while ($res = $statement->fetch(\PDO::FETCH_ASSOC)) {
                                 $comm = $this->getComment->findAllWithKey($res["post_key"]);
+                                $images = $this->getPostImages($res["post_key"]);
+                                $res["post_images"] = $images;
+                                
                                 $res += ["comments" => $comm];
                                 $result = $res;
                         }
@@ -103,6 +110,9 @@ class NewsGateway
                         $statement->execute(array($short_url));
                         while ($res = $statement->fetch(\PDO::FETCH_ASSOC)) {
                                 $comm = $this->getComment->findAllWithKey($res["post_key"]);
+                                $images = $this->getPostImages($res["post_key"]);
+                                $res["post_images"] = $images;
+                                
                                 $res += ["comments" => $comm];
                                 $result = $res;
                         }
@@ -120,19 +130,52 @@ class NewsGateway
                         VALUES
                                 (:post_title, :post_body, :post_images, :post_key, :post_category, :author, :post_short_url)
                 ";
+                $statementImage = "
+                        INSERT INTO images
+                                (image_url, image_key)
+                        VALUES
+                                (:image_url, :image_key)
+                ";
                 try {
+                        $post_key = md5($input['post_title'].rand(123, 2345621));
                         $statement = $this->db->prepare($statement);
+                        $statementImage = $this->db->prepare($statementImage);
                         $statement->execute(array(
                                 'post_title' => $input['post_title'],
                                 'post_body' => $input['post_body'],
-                                'post_images' => $ddd->makeImg($input['post_images']),
-                                'post_key' => md5($input['post_title'].rand(123, 2345621)),                            
+                                'post_images' => $ddd->makeImg($input['post_images'][0]),
+                                'post_key' => $post_key,
                                 'post_category' => $input['post_category'],
                                 'author' => $input['author'],
-                                'post_short_url' => str_replace(" ", "-", $input['post_title']."-".rand(12345, 23456219090))
+                                'post_short_url' => str_replace(".", "-", str_replace(" ", "-", $input['post_title']."-".rand(12345, 23456219090)))
                                 
                         ));
+                        foreach ($input['post_images'] as $image) {
+                                
+                                $statementImage->execute(array(
+                                        'image_url' => $ddd->makeImg($image),
+                                        'image_key' => $post_key
+                                ));
+                        }
                         return $statement->rowCount();
+                } catch (\PDOException $e) {
+                        exit($e->getMessage());
+                }
+        }
+        public function getPostImages(String $postKey)
+        {
+                $statement = "
+                        SELECT
+                                image_url
+                        FROM
+                                images
+                        WHERE image_key = ?;
+                ";
+                try {
+                        $statement = $this->db->prepare($statement);
+                        $statement->execute(array($postKey));
+                        $result = $statement->fetchAll(\PDO::FETCH_COLUMN);
+                        return $result;
                 } catch (\PDOException $e) {
                         exit($e->getMessage());
                 }
