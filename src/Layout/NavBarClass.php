@@ -67,10 +67,7 @@ NAVBAR
                 </ul>
                 <ul class="navbar-nav ml-auto d-flex align-items-center">
                     <li class="nav-item highlight">
-                        <a class="nav-link" href="https://www.wowthemes.net/ChemLounge-free-html-bootstrap-template/">Log-In</a>
-                    </li>
-                    <li class="nav-item highlight">
-                        <a class="nav-link" href="https://www.wowthemes.net/ChemLounge-free-html-bootstrap-template/">Sign-up</a>
+                        <a class="nav-link" href="#">ADVERTISE WITH US</a>
                     </li>
                 </ul>
             </div>
