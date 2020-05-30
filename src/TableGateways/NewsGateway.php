@@ -5,14 +5,13 @@ use Src\Logic\MakeImage;
 use Src\TableGateWays\CommentsGateway;
 
 
-class NewsGateway
+class NewsGateway extends CommentsGateway
 {
     private $db = null;
-    public $getComment = null;
     public function __construct($db)
-        {
+        {       
+                parent::__construct($db);
                 $this->db = $db;
-                $this->getComment = new CommentsGateway($db);
                 
         }
         public function getAll()
@@ -30,7 +29,7 @@ class NewsGateway
                         $result = array();
                         $statement = $this->db->query($statement);
                         while ($res = $statement->fetch(\PDO::FETCH_ASSOC)) {
-                                $comm = $this->getComment->findAllWithKey($res["post_key"]);
+                                $comm = $this->findAllWithKey($res["post_key"]);
                                 $images = $this->getPostImages($res["post_key"]);
                                 $res["post_images"] = $images;
                                 $res += ["comments" => $comm];
@@ -56,7 +55,7 @@ class NewsGateway
                         $statement = $this->db->prepare($statement);
                         $statement->execute(array($cat));
                         while ($res = $statement->fetch(\PDO::FETCH_ASSOC)) {
-                                $comm = $this->getComment->findAllWithKey($res["post_key"]);
+                                $comm = $this->findAllWithKey($res["post_key"]);
                                 $images = $this->getPostImages($res["post_key"]);
                                 $res["post_images"] = $images;
                                 $res += ["comments" => $comm];
@@ -82,7 +81,7 @@ class NewsGateway
                         $statement = $this->db->prepare($statement);
                         $statement->execute(array($id));
                         while ($res = $statement->fetch(\PDO::FETCH_ASSOC)) {
-                                $comm = $this->getComment->findAllWithKey($res["post_key"]);
+                                $comm = $this->findAllWithKey($res["post_key"]);
                                 $images = $this->getPostImages($res["post_key"]);
                                 $res["post_images"] = $images;
                                 
@@ -109,7 +108,7 @@ class NewsGateway
                         $statement = $this->db->prepare($statement);
                         $statement->execute(array($short_url));
                         while ($res = $statement->fetch(\PDO::FETCH_ASSOC)) {
-                                $comm = $this->getComment->findAllWithKey($res["post_key"]);
+                                $comm = $this->findAllWithKey($res["post_key"]);
                                 $images = $this->getPostImages($res["post_key"]);
                                 $res["post_images"] = $images;
                                 
